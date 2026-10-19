@@ -362,7 +362,7 @@ create policy profiles_update_mod on public.profiles for update to authenticated
 create policy members_read on public.members for select to authenticated using (public.is_active_member());
 create policy members_manage_mod on public.members for all to authenticated using (public.has_family_rank(array['👑・EL PATRÓN','🥇・MANO DERECHA','🥈・MANO DE IZQUIERDA'])) with check (public.has_family_rank(array['👑・EL PATRÓN','🥇・MANO DERECHA','🥈・MANO DE IZQUIERDA']));
 create policy member_quotas_read on public.member_quotas for select to authenticated using (public.is_active_member());
-create policy member_quotas_manage on public.member_quotas for all to authenticated using (public.is_active_member()) with check (public.is_active_member() and updated_by=(select auth.uid()));
+create policy member_quotas_manage on public.member_quotas for all to authenticated using (public.has_family_rank(array['👑・EL PATRÓN','🥇・MANO DERECHA','🥈・MANO DE IZQUIERDA'])) with check (public.has_family_rank(array['👑・EL PATRÓN','🥇・MANO DERECHA','🥈・MANO DE IZQUIERDA']) and updated_by=(select auth.uid()));
 create policy inventory_read on public.inventory_items for select to authenticated using (public.is_active_member());
 create policy inventory_write on public.inventory_items for all to authenticated using (public.has_family_rank(array['👑・EL PATRÓN','🥇・MANO DERECHA','🥈・MANO DE IZQUIERDA','🔫・JEFE D’ARSENAL','🤝・ASSISTANT ARSENAL'])) with check (public.has_family_rank(array['👑・EL PATRÓN','🥇・MANO DERECHA','🥈・MANO DE IZQUIERDA','🔫・JEFE D’ARSENAL','🤝・ASSISTANT ARSENAL']));
 create policy applications_read on public.applications for select to authenticated using (public.is_active_member());
