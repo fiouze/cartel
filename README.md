@@ -14,7 +14,7 @@ Sans variables Supabase, les formulaires fonctionnent en mode démo. La connexio
 
 1. Crée un projet Supabase et garde son URL de projet ainsi que sa clé publique **anon/publishable**.
 2. Dans **SQL Editor → New query**, colle le contenu de [`supabase/schema.sql`](supabase/schema.sql) et clique sur **Run**. Ça crée les tables, les comptes automatiques, les validations et les règles de sécurité RLS. Sur une ancienne installation, relance ce schéma mis à jour : il remplace les règles de l’application et conserve les autres politiques du projet.
-3. Dans **Authentication → Users → Add user → Invite user**, invite d’abord l’adresse e-mail qui sera celle d’El Patrón. La personne reçoit l’invitation Supabase et choisit son mot de passe.
+3. Dans **Authentication → URL Configuration**, règle la Site URL sur l’adresse Vercel et ajoute-la aux Redirect URLs. Les personnes peuvent ensuite créer leur compte avec le bouton **Connexion → S’inscrire** du site. Supabase envoie un e-mail de confirmation si la confirmation d’adresse est activée dans les réglages d’authentification. Le déclencheur SQL crée automatiquement leur profil et leur membre au grade Recrue.
 4. Une fois le compte créé, attribue-lui le grade Patron dans SQL Editor en remplaçant l’adresse :
 
    ```sql
@@ -47,7 +47,7 @@ Si le dépôt contient déjà ce dossier comme sous-dossier, définis ce sous-do
 
 ## Comptes et grades
 
-Les utilisateurs se connectent par adresse e-mail et mot de passe avec **Connexion** en haut à droite ; il n’y a pas d’inscription publique. Pour chaque nouveau compte, envoie une invitation depuis Supabase Authentication. Une candidature acceptée devient une ligne du roster comme **Recrue**. Invite ensuite son adresse e-mail dans Supabase : le compte sera relié automatiquement à cette ligne.
+Les utilisateurs peuvent s’inscrire depuis **Connexion → S’inscrire**, puis se connecter avec leur adresse e-mail et leur mot de passe. Chaque nouveau compte démarre comme **Recrue**. Une candidature acceptée devient une ligne du roster comme **Recrue** ; l’inscription avec la même adresse e-mail relie automatiquement le compte à cette ligne. L’inscription est ouverte à toute personne qui connaît l’adresse du site : partage le lien uniquement avec les personnes que tu souhaites autoriser.
 
 Les trois modérateurs ouvrent **Modération → Comptes familiaux et grades** pour choisir un grade dans la liste, désactiver un compte ou le réactiver. Les grades sont aussi affichés dans **Hiérarchie** ; sélectionner une carte montre les profils actifs de ce rang. La page Modération et le Centre de veille sont réservés à El Patrón, Mano Derecha et Mano de Izquierda. Les règles RLS et les fonctions Supabase vérifient aussi les permissions côté base. Les opérations REECEL du panier ajoutent une ligne à `reecel_transactions` et débitent ou créditent `cash_ledger` selon le mode choisi.
 
