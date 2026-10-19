@@ -76,6 +76,20 @@ const navItems = [
 const money = n => `${Number(n).toLocaleString('fr-FR')} $`
 const categoryIcon = category => ({ Arme:'🔫', Protection:'🦺', Accessoire:'🔩', Divers:'📦' }[category] || '📦')
 
+function AccessGate({ children }) {
+  const [unlocked, setUnlocked] = useState(() => { try { return sessionStorage.getItem('sinaloa-access-granted') === '1' } catch { return false } })
+  const [error, setError] = useState('')
+  const submit = event => {
+    event.preventDefault()
+    const code = new FormData(event.currentTarget).get('accessCode').toString().replace(/[\s-]/g, '')
+    if (code !== '304010') { setError('Code incorrect. Vérifie les chiffres et réessaie.'); event.currentTarget.reset(); return }
+    try { sessionStorage.setItem('sinaloa-access-granted', '1') } catch {}
+    setUnlocked(true)
+  }
+  if (unlocked) return children
+  return <main className="access-gate"><style>{`.access-gate{min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(ellipse at 50% 12%,#302719,transparent 48%),linear-gradient(145deg,#080909,#0c0b09 55%,#080909);color:#f4f0e8}.access-card{width:min(440px,100%);padding:42px 34px 30px;text-align:center;border:1px solid rgba(218,174,89,.4);border-radius:14px;background:linear-gradient(145deg,#191815,#0b0c0c);box-shadow:0 30px 100px #000a;animation:access-rise .4s ease}.access-crown{font-size:40px;color:#efd18a;text-shadow:0 0 24px #d8b16755}.access-overline{display:block;margin-top:18px;font:9px Arial,sans-serif;letter-spacing:3px;color:#c5a65e}.access-card h1{margin:12px 0 8px;font:500 38px Georgia,serif;color:#f0d48f}.access-welcome{margin:0;color:#e1ddd4;font:16px/1.7 Georgia,serif}.access-divider{margin:24px auto;color:#d9b86e;letter-spacing:12px}.access-instruction{font:12px Arial,sans-serif;color:#c9c2b4;margin:0 0 14px}.access-card input{width:100%;height:54px;border:1px solid rgba(218,174,89,.38);border-radius:8px;background:#0c0d0d;color:#f2dfac;text-align:center;font:20px Arial,sans-serif;letter-spacing:8px;outline:none}.access-card input:focus{border-color:#d8b167;box-shadow:0 0 0 3px #d8b16722}.access-card input::placeholder{color:#756b56;letter-spacing:5px}.access-submit{width:100%;height:47px;margin-top:12px;border:1px solid #eac36d77;border-radius:8px;background:linear-gradient(110deg,#9f7630,#d2ab5f 52%,#a47b35);color:#17130c;font-weight:700;cursor:pointer}.access-error{color:#f18e83;font:11px Arial,sans-serif}.access-foot{margin:28px 0 0;color:#81745a;font:8px Arial,sans-serif;letter-spacing:3px}@keyframes access-rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}@media(max-width:520px){.access-card{padding:34px 22px}.access-card h1{font-size:33px}}`}</style><section className="access-card"><div className="access-crown" aria-hidden="true">♛</div><span className="access-overline">LOS SINALOA’S · ESPACE PRIVÉ</span><h1>Bienvenue</h1><p className="access-welcome">Bienvenue dans le site officiel<br/>du cartel de Los Sinaloa’s.</p><div className="access-divider">── ⚜ ──</div><p className="access-instruction">🔒 Saisis le code d’accès pour continuer</p><form onSubmit={submit}><label className="sr-only" htmlFor="site-access-code">Code d’accès</label><input id="site-access-code" name="accessCode" type="password" inputMode="numeric" autoComplete="one-time-code" placeholder="•• •• ••" autoFocus required/><button className="access-submit" type="submit">Entrer dans l’espace　→</button>{error&&<p className="access-error" role="alert">{error}</p>}</form><p className="access-foot">FAMILLE · HONNEUR · LOYAUTÉ</p></section></main>
+}
+
 function App() {
   const [data, setData] = useState(() => {
     if (supabase) return emptyData
@@ -474,4 +488,4 @@ class ScreenBoundary extends React.Component {
   static getDerivedStateFromError(){return {failed:true}}
   render(){return this.state.failed?<main className="screen-error"><Shield size={30}/><h1>Cette page n’a pas pu s’ouvrir</h1><p>Une erreur a interrompu l’affichage. Reviens au tableau de bord ou recharge la page.</p><button className="primary-button" onClick={()=>{this.setState({failed:false});window.location.reload()}}>Recharger l’espace</button></main>:this.props.children}
 }
-createRoot(document.getElementById('root')).render(<ScreenBoundary><App/></ScreenBoundary>)
+createRoot(document.getElementById('root')).render(<AccessGate><ScreenBoundary><App/></ScreenBoundary></AccessGate>)
