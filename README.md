@@ -55,3 +55,6 @@ Les trois modérateurs ouvrent **Modération → Comptes familiaux et grades** p
 
 - Les lignes initiales (caisse, inventaire, membres, activités et candidatures) sont des exemples de démonstration. Une base Supabase neuve commence avec ses propres données.
 - Le mode démo utilise les valeurs d’exemple et le stockage local du navigateur. Supabase synchronise `profiles`, `members`, `inventory_items`, `applications`, `cash_ledger`, `sales`, `activities`, `operations` et `drug_requests`.
+
+
+Le dépôt `fiouze/cartel` est relié au projet Vercel `los-sinaloas-github` : chaque commit sur `main` lance un nouveau déploiement de production.
