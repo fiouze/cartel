@@ -18,5 +18,5 @@ create policy member_quotas_read on public.member_quotas
 
 create policy member_quotas_manage on public.member_quotas
   for all to authenticated
-  using (public.is_active_member())
-  with check (public.is_active_member() and updated_by = (select auth.uid()));
+  using (public.has_family_rank(array['👑・EL PATRÓN','🥇・MANO DERECHA','🥈・MANO DE IZQUIERDA']))
+  with check (public.has_family_rank(array['👑・EL PATRÓN','🥇・MANO DERECHA','🥈・MANO DE IZQUIERDA']) and updated_by = (select auth.uid()));
